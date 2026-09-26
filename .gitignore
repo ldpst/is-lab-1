@@ -1,0 +1,8 @@
+.gradle/
+build/
+.idea/
+*.iml
+out/
+wildfly-*/
+wildfly-*.zip
+frontend/node_modules/
