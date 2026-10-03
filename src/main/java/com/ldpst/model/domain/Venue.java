@@ -5,7 +5,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
 @Entity
-@Table(name = "venues", schema = "variant2")
+@Table(name = "venues")
 public class Venue {
     @Id
     @Positive
