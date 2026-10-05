@@ -1,5 +1,8 @@
 package com.ldpst.model.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -38,6 +41,9 @@ public class Person {
     @NotNull
     @Enumerated(EnumType.STRING)
     private Country nationality;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE)
+    private List<Ticket> tickets = new ArrayList<>();
 
     public Long getId() {
         return id;

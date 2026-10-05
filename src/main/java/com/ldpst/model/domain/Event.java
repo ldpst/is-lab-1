@@ -1,5 +1,8 @@
 package com.ldpst.model.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -22,6 +25,9 @@ public class Event {
     @NotBlank
     @Column(nullable = false)
     private String description;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
+    private List<Ticket> tickets = new ArrayList<>();
 
     public Long getId() {
         return id;

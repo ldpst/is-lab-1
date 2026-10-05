@@ -1,5 +1,7 @@
 package com.ldpst.service;
 
+import java.util.Map;
+
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +27,21 @@ import com.ldpst.model.dto.Command.TicketCommand;
 
 @Service
 public class TicketService {
+    private static final Map<String, String> SORT_PROPERTIES = Map.ofEntries(
+            Map.entry("id", "id"),
+            Map.entry("name", "name"),
+            Map.entry("creationDate", "creationDate"),
+            Map.entry("x", "coordinates.x"),
+            Map.entry("y", "coordinates.y"),
+            Map.entry("personPassportID", "person.passportID"),
+            Map.entry("personPassportId", "person.passportID"),
+            Map.entry("eventName", "event.name"),
+            Map.entry("price", "price"),
+            Map.entry("type", "type"),
+            Map.entry("discount", "discount"),
+            Map.entry("number", "number"),
+            Map.entry("venueName", "venue.name"));
+
     private final TicketRepository ticketRepository;
     private final EventRepository eventRepository;
     private final VenuesRepository venuesRepository;
@@ -42,7 +59,8 @@ public class TicketService {
 
     @Transactional(readOnly = true)
     public PageResult<Ticket> findAll(TicketSearch ts) {
-        Sort sort = Sort.by(ts.ascending() ? Sort.Direction.ASC : Sort.Direction.DESC, ts.sort());
+        String sortProperty = SORT_PROPERTIES.getOrDefault(ts.sort(), "id");
+        Sort sort = Sort.by(ts.ascending() ? Sort.Direction.ASC : Sort.Direction.DESC, sortProperty);
 
         Pageable pageable = PageRequest.of(ts.page(), ts.size(), sort);
 
