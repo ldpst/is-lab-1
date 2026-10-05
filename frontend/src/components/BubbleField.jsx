@@ -20,14 +20,18 @@ export function BubbleField({ tickets, selectedId, onSelect, onEdit }) {
       const prices = tickets.map((ticket) => Math.log1p(ticket.price))
       const minPrice = Math.min(...prices)
       const maxPrice = Math.max(...prices)
-      const range = Math.max(.001, maxPrice - minPrice)
-      const areaBudget = width * height * .42
+      const range = Math.max(0.001, maxPrice - minPrice)
+      const areaBudget = width * height * 0.42
       const unitRadius = Math.sqrt(areaBudget / (Math.PI * tickets.length))
-      const minRadius = clamp(unitRadius * .55, 18, 40)
-      const maxRadius = clamp(unitRadius * 1.45, minRadius + 12, Math.min(98, width / 4, height / 4))
+      const minRadius = clamp(unitRadius * 0.55, 18, 40)
+      const maxRadius = clamp(
+        unitRadius * 1.45,
+        minRadius + 12,
+        Math.min(98, width / 4, height / 4),
+      )
 
       bodies = tickets.map((ticket, index) => {
-        const ratio = tickets.length === 1 ? .5 : (Math.log1p(ticket.price) - minPrice) / range
+        const ratio = tickets.length === 1 ? 0.5 : (Math.log1p(ticket.price) - minPrice) / range
         const radius = minRadius + (maxRadius - minRadius) * Math.sqrt(ratio)
         const random = seededRandom(ticket.id * 7919 + index)
         return {
@@ -35,8 +39,8 @@ export function BubbleField({ tickets, selectedId, onSelect, onEdit }) {
           radius,
           x: radius + random() * Math.max(1, width - radius * 2),
           y: radius + random() * Math.max(1, height - radius * 2),
-          vx: (random() - .5) * .16,
-          vy: (random() - .5) * .16,
+          vx: (random() - 0.5) * 0.16,
+          vy: (random() - 0.5) * 0.16,
           phase: random() * Math.PI * 2,
         }
       })
@@ -44,7 +48,9 @@ export function BubbleField({ tickets, selectedId, onSelect, onEdit }) {
       const totalArea = bodies.reduce((sum, body) => sum + Math.PI * body.radius ** 2, 0)
       if (totalArea > areaBudget) {
         const scale = Math.sqrt(areaBudget / totalArea)
-        bodies.forEach((body) => { body.radius = Math.max(15, body.radius * scale) })
+        bodies.forEach((body) => {
+          body.radius = Math.max(15, body.radius * scale)
+        })
       }
 
       for (let step = 0; step < 260; step += 1) resolveCollisions(bodies, width, height, false)
@@ -75,10 +81,13 @@ export function BubbleField({ tickets, selectedId, onSelect, onEdit }) {
 
       if (!reduceMotion) {
         bodies.forEach((body) => {
-          body.vx += Math.sin(now * .00035 + body.phase) * .0012
-          body.vy += Math.cos(now * .0003 + body.phase) * .0012
+          body.vx += Math.sin(now * 0.00035 + body.phase) * 0.0012
+          body.vy += Math.cos(now * 0.0003 + body.phase) * 0.0012
           const speed = Math.hypot(body.vx, body.vy)
-          if (speed > .18) { body.vx *= .18 / speed; body.vy *= .18 / speed }
+          if (speed > 0.18) {
+            body.vx *= 0.18 / speed
+            body.vy *= 0.18 / speed
+          }
           body.x += body.vx * delta
           body.y += body.vy * delta
         })
@@ -99,22 +108,30 @@ export function BubbleField({ tickets, selectedId, onSelect, onEdit }) {
     }
   }, [tickets])
 
-  return <div className="bubble-field panel" ref={fieldRef}>
-    {tickets.map((ticket) => <button
-      key={ticket.id}
-      ref={(element) => element ? bubbleRefs.current.set(ticket.id, element) : bubbleRefs.current.delete(ticket.id)}
-      className={`ticket-bubble ${selectedId === ticket.id ? 'selected' : ''} ${(ticket.discount || 0) >= 68 ? 'high-discount' : ''}`}
-      style={{ '--discount': `${ticket.discount || 0}%` }}
-      onClick={() => onSelect(ticket)}
-      onDoubleClick={() => onEdit(ticket)}
-      title="Нажмите для выбора, дважды — для редактирования"
-    >
-      <span className="bubble-id">#{ticket.id}</span>
-      <strong>{truncate(ticket.name, 20)}</strong>
-      <span className="bubble-price">{formatMoney(ticket.price)}</span>
-      <b>{ticket.discount ? `−${ticket.discount}%` : '0%'}</b>
-    </button>)}
-  </div>
+  return (
+    <div className="bubble-field panel" ref={fieldRef}>
+      {tickets.map((ticket) => (
+        <button
+          key={ticket.id}
+          ref={(element) =>
+            element
+              ? bubbleRefs.current.set(ticket.id, element)
+              : bubbleRefs.current.delete(ticket.id)
+          }
+          className={`ticket-bubble ${selectedId === ticket.id ? 'selected' : ''} ${(ticket.discount || 0) >= 68 ? 'high-discount' : ''}`}
+          style={{ '--discount': `${ticket.discount || 0}%` }}
+          onClick={() => onSelect(ticket)}
+          onDoubleClick={() => onEdit(ticket)}
+          title="Нажмите для выбора, дважды — для редактирования"
+        >
+          <span className="bubble-id">#{ticket.id}</span>
+          <strong>{truncate(ticket.name, 20)}</strong>
+          <span className="bubble-price">{formatMoney(ticket.price)}</span>
+          <b>{ticket.discount ? `−${ticket.discount}%` : '0%'}</b>
+        </button>
+      ))}
+    </div>
+  )
 }
 
 function resolveCollisions(bodies, width, height, bounce) {
@@ -128,35 +145,55 @@ function resolveCollisions(bodies, width, height, bounce) {
       let distance = Math.hypot(dx, dy)
       const minimum = first.radius + second.radius + gap
       if (distance >= minimum) continue
-      if (distance < .001) { dx = 1; dy = 0; distance = 1 }
+      if (distance < 0.001) {
+        dx = 1
+        dy = 0
+        distance = 1
+      }
       const nx = dx / distance
       const ny = dy / distance
       const overlap = (minimum - distance) / 2
-      first.x -= nx * overlap; first.y -= ny * overlap
-      second.x += nx * overlap; second.y += ny * overlap
+      first.x -= nx * overlap
+      first.y -= ny * overlap
+      second.x += nx * overlap
+      second.y += ny * overlap
       if (bounce) {
         const relative = (second.vx - first.vx) * nx + (second.vy - first.vy) * ny
         if (relative < 0) {
-          const impulse = relative * .75
-          first.vx += nx * impulse; first.vy += ny * impulse
-          second.vx -= nx * impulse; second.vy -= ny * impulse
+          const impulse = relative * 0.75
+          first.vx += nx * impulse
+          first.vy += ny * impulse
+          second.vx -= nx * impulse
+          second.vy -= ny * impulse
         }
       }
     }
   }
 
   bodies.forEach((body) => {
-    if (body.x < body.radius) { body.x = body.radius; body.vx = Math.abs(body.vx) }
-    if (body.x > width - body.radius) { body.x = width - body.radius; body.vx = -Math.abs(body.vx) }
-    if (body.y < body.radius) { body.y = body.radius; body.vy = Math.abs(body.vy) }
-    if (body.y > height - body.radius) { body.y = height - body.radius; body.vy = -Math.abs(body.vy) }
+    if (body.x < body.radius) {
+      body.x = body.radius
+      body.vx = Math.abs(body.vx)
+    }
+    if (body.x > width - body.radius) {
+      body.x = width - body.radius
+      body.vx = -Math.abs(body.vx)
+    }
+    if (body.y < body.radius) {
+      body.y = body.radius
+      body.vy = Math.abs(body.vy)
+    }
+    if (body.y > height - body.radius) {
+      body.y = height - body.radius
+      body.vy = -Math.abs(body.vy)
+    }
   })
 }
 
 function seededRandom(seed) {
   let value = seed % 2147483647
   return () => {
-    value = value * 16807 % 2147483647
+    value = (value * 16807) % 2147483647
     return (value - 1) / 2147483646
   }
 }

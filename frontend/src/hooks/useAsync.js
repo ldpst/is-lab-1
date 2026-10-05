@@ -9,8 +9,12 @@ export function useAsync(loader, dependencies) {
     setState({ data: null, loading: true, error: '', key })
     loader()
       .then((data) => active && setState({ data, loading: false, error: '', key }))
-      .catch((error) => active && setState({ data: null, loading: false, error: error.message, key }))
-    return () => { active = false }
+      .catch(
+        (error) => active && setState({ data: null, loading: false, error: error.message, key }),
+      )
+    return () => {
+      active = false
+    }
   }, dependencies)
 
   return state.key === key ? state : { data: null, loading: true, error: '', key }

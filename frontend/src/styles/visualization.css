@@ -1,0 +1,214 @@
+.legend {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  padding: 13px 16px;
+  color: var(--muted);
+  font-size: 10px;
+  margin-bottom: 15px;
+}
+
+.legend span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-bubble {
+  display: inline-block;
+  border: 1px solid #777;
+  border-radius: 50%;
+  background: #25252a99;
+}
+
+.legend-bubble.small {
+  width: 10px;
+  height: 10px;
+}
+
+.legend-bubble.large {
+  width: 19px;
+  height: 19px;
+}
+
+.legend-discount {
+  width: 20px;
+  height: 10px;
+  background: var(--orange);
+  border-radius: 3px;
+}
+
+.bubble-field {
+  position: relative;
+  height: clamp(480px, 68vh, 720px);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.bubble-field::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(#ffffff09 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: 0.45;
+}
+
+.ticket-bubble {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  opacity: 0;
+  border-radius: 50%;
+  border: 1px solid
+    color-mix(in srgb, rgb(255 150 72 / 0.72) var(--discount), rgb(112 112 122 / 0.45));
+  background: color-mix(in srgb, rgb(255 122 26 / 0.62) var(--discount), rgb(31 31 36 / 0.48));
+  color: #f8f8f5;
+  box-shadow:
+    inset 8px 10px 22px #ffffff0d,
+    inset -10px -12px 26px #0004,
+    0 8px 26px #0005;
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 10px;
+  text-align: center;
+  overflow: hidden;
+  will-change: transform;
+  transition:
+    opacity 0.2s ease,
+    width 0.25s ease,
+    height 0.25s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.ticket-bubble:hover {
+  z-index: 3;
+  border-color: #fff9;
+  box-shadow:
+    inset 8px 10px 22px #ffffff16,
+    inset -10px -12px 26px #0003,
+    0 10px 30px #0008;
+}
+
+.ticket-bubble.selected {
+  z-index: 4;
+  border-color: white;
+  box-shadow:
+    inset 0 0 0 1px #fff,
+    inset 8px 10px 22px #ffffff18,
+    0 0 0 3px #ffffff20,
+    0 10px 30px #0008;
+}
+
+.ticket-bubble.high-discount {
+  color: #1c120c;
+}
+
+.ticket-bubble strong {
+  display: block;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.bubble-id {
+  color: #aaaab1;
+  font:
+    9px ui-monospace,
+    monospace;
+}
+
+.bubble-price {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ticket-bubble b {
+  border-radius: 4px;
+  background: #0e0e11b8;
+  color: #ff9a51;
+  padding: 2px 5px;
+  font-size: 9px;
+}
+
+.ticket-bubble.high-discount .bubble-id {
+  color: #4f2e18;
+}
+
+.ticket-bubble.high-discount b {
+  background: #17110dcc;
+  color: #ff9a51;
+}
+
+.ticket-bubble.compact-bubble {
+  gap: 1px;
+  padding: 5px;
+}
+
+.ticket-bubble.compact-bubble strong {
+  max-width: 92%;
+  font-size: 10px;
+}
+
+.ticket-bubble.compact-bubble .bubble-id {
+  display: none;
+}
+
+.ticket-bubble.compact-bubble .bubble-price {
+  font-size: 9px;
+}
+
+.ticket-bubble.compact-bubble b {
+  padding: 1px 3px;
+  font-size: 8px;
+}
+
+.ticket-bubble.tiny-bubble strong {
+  font-size: 9px;
+}
+
+.ticket-bubble.tiny-bubble .bubble-price,
+.ticket-bubble.tiny-bubble b {
+  display: none;
+}
+
+.selection-bar {
+  position: fixed;
+  left: calc(232px + 50%);
+  transform: translateX(-50%);
+  bottom: 24px;
+  z-index: 10;
+  min-width: min(650px, calc(100vw - 280px));
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #3c3c42;
+  background: #1b1b1fee;
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 10px 13px 10px 17px;
+  box-shadow: 0 14px 50px #000a;
+}
+
+.selection-bar > div {
+  display: grid;
+  margin-right: auto;
+}
+
+.selection-bar span {
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.selection-bar strong {
+  font-size: 12px;
+}

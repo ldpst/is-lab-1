@@ -1,6 +1,4 @@
-const deploymentRoot = import.meta.env.DEV
-  ? ''
-  : window.location.pathname.replace(/\/[^/]*$/, '')
+const deploymentRoot = import.meta.env.DEV ? '' : window.location.pathname.replace(/\/[^/]*$/, '')
 
 export const API_ROOT = `${deploymentRoot}/api`
 
@@ -14,7 +12,9 @@ export class ApiError extends Error {
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_ROOT}${path}`, {
-    headers: options.body ? { 'Content-Type': 'application/json', ...options.headers } : options.headers,
+    headers: options.body
+      ? { 'Content-Type': 'application/json', ...options.headers }
+      : options.headers,
     ...options,
   })
 
@@ -25,10 +25,12 @@ async function request(path, options = {}) {
     } catch {
       body = null
     }
-    const details = Array.isArray(body?.details) && body.details.length ? `: ${body.details.join('; ')}` : ''
-    const message = (body?.message || body?.error)
-      ? `${body.message || body.error}${details}`
-      : `Ошибка запроса (${response.status})`
+    const details =
+      Array.isArray(body?.details) && body.details.length ? `: ${body.details.join('; ')}` : ''
+    const message =
+      body?.message || body?.error
+        ? `${body.message || body.error}${details}`
+        : `Ошибка запроса (${response.status})`
     throw new ApiError(message, response.status, body)
   }
 

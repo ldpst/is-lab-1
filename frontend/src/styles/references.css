@@ -1,0 +1,103 @@
+.reference-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+.tabs {
+  display: flex;
+  gap: 5px;
+}
+
+.tabs button {
+  background: transparent;
+  border: 0;
+  color: #777;
+  border-bottom: 2px solid transparent;
+  padding: 10px 16px;
+}
+
+.tabs button.active {
+  color: white;
+  border-color: var(--orange);
+}
+
+.reference-panel {
+  padding: 16px;
+}
+
+.reference-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 11px;
+}
+
+.reference-card {
+  min-width: 0;
+  min-height: 190px;
+  padding: 18px;
+  background: #19191d;
+  border: 1px solid #29292f;
+  border-radius: 9px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.reference-card:hover,
+.reference-card:focus-visible {
+  border-color: #5a4030;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.reference-card h3 {
+  font-size: 16px;
+  margin: 8px 0 14px;
+  overflow-wrap: anywhere;
+}
+
+.reference-card p {
+  color: #8e8e96;
+  margin: 5px 0;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.reference-summary {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.reference-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.reference-card button {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: #ddd;
+  font-size: 11px;
+}
+
+.reference-card .text-danger {
+  color: #ff856f;
+}
+
+.card-id {
+  color: var(--orange);
+  font:
+    10px ui-monospace,
+    monospace;
+}

@@ -6,8 +6,10 @@ import { TicketsPage } from './pages/TicketsPage'
 import { VisualizationPage } from './pages/VisualizationPage'
 
 const NAV = [
-  ['tickets', 'Билеты'], ['visual', 'Визуализация'],
-  ['references', 'Справочники'], ['special', 'Спецоперации'],
+  ['tickets', 'Билеты'],
+  ['visual', 'Визуализация'],
+  ['references', 'Справочники'],
+  ['special', 'Спецоперации'],
 ]
 
 export default function App() {
@@ -32,7 +34,11 @@ export default function App() {
       }
     }
     connect()
-    return () => { stopped = true; window.clearTimeout(retry); socket?.close() }
+    return () => {
+      stopped = true
+      window.clearTimeout(retry)
+      socket?.close()
+    }
   }, [])
 
   useEffect(() => {
@@ -46,17 +52,32 @@ export default function App() {
     setNotice(message)
   }
 
-  return <div className="app-shell">
-    <aside className="sidebar">
-      <div className="brand"><span className="brand-mark">T</span><span>Ticket System</span></div>
-      <nav>{NAV.map(([id, label]) => <button key={id} className={page === id ? 'nav-item active' : 'nav-item'} onClick={() => setPage(id)}>{label}</button>)}</nav>
-    </aside>
-    <main>
-      {page === 'tickets' && <TicketsPage version={syncVersion} onChanged={changed} />}
-      {page === 'visual' && <VisualizationPage version={syncVersion} onChanged={changed} />}
-      {page === 'references' && <ReferencesPage version={syncVersion} onChanged={changed} />}
-      {page === 'special' && <SpecialPage version={syncVersion} onChanged={changed} />}
-    </main>
-    {notice && <div className="toast">{notice}</div>}
-  </div>
+  return (
+    <div className="app-shell">
+      <aside className="sidebar">
+        <div className="brand">
+          <span className="brand-mark">T</span>
+          <span>Ticket System</span>
+        </div>
+        <nav>
+          {NAV.map(([id, label]) => (
+            <button
+              key={id}
+              className={page === id ? 'nav-item active' : 'nav-item'}
+              onClick={() => setPage(id)}
+            >
+              {label}
+            </button>
+          ))}
+        </nav>
+      </aside>
+      <main>
+        {page === 'tickets' && <TicketsPage version={syncVersion} onChanged={changed} />}
+        {page === 'visual' && <VisualizationPage version={syncVersion} onChanged={changed} />}
+        {page === 'references' && <ReferencesPage version={syncVersion} onChanged={changed} />}
+        {page === 'special' && <SpecialPage version={syncVersion} onChanged={changed} />}
+      </main>
+      {notice && <div className="toast">{notice}</div>}
+    </div>
+  )
 }
